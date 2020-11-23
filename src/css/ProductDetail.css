@@ -1,0 +1,19 @@
+.mainImageContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.subImageContainer {
+  margin: 50px 70px;
+}
+
+.productPriceContainer {
+  width: 90%;
+}
+
+.shareButton {
+  border-radius: 50% !important;
+  height: 45px;
+  margin-right: 30px !important;
+}

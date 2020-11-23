@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Dashboard from "./components/Dashboard/Dashboard";
+import LoginPage from "./components/Login/LoginPage";
+import RegisterPage from "./components/Register/RegisterPage";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+import ProductDetail from "./components/ProductDetail/ProductDetail";
+import store from "./redux/store.js";
+import { Provider } from "react-redux";
+import Products from "./components/Products/Products";
+import ContainerPage from "./components/SidePane/ContainerPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <Header />
+      {/* <Dashboard></Dashboard> */}
+      {/* <LoginPage></LoginPage> */}
+      {/* <RegisterPage></RegisterPage> */}
+      {/* <ForgotPassword></ForgotPassword> */}
+      {/* <ProductDetail></ProductDetail> */}
+      {/* <Products></Products> */}
+      <ContainerPage></ContainerPage>
+      <Footer></Footer>
+    </Provider>
   );
 }
 

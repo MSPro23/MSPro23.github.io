@@ -1,0 +1,34 @@
+.sidePaneElement {
+  width: 60%;
+  box-shadow: lightslategray 0.5px 0.5px !important;
+}
+
+.filterList {
+  border: 0.5px lightgray solid;
+  border-radius: 5px;
+}
+
+.categoryHeading {
+  display: inline-block;
+}
+
+.sortButtonContainer {
+  float: right;
+  margin-left: auto;
+}
+
+.sortButtons {
+  padding: 3px 20px !important;
+  margin-left: 3px !important;
+  color: #36b !important;
+  background-color: white !important;
+  border: none !important;
+}
+
+.mainProductContainer {
+  margin-right: 10% !important;
+}
+
+.productsPageContainer {
+  margin: 80px 20px 50px;
+}

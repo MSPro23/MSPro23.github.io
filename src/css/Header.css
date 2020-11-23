@@ -1,0 +1,17 @@
+.logo-start {
+  color: white;
+}
+
+.logo {
+  color: rgb(255, 0, 0);
+}
+
+.nav-link {
+  margin: 0% 5%;
+  color: white !important;
+  font-size: 18px !important;
+}
+
+.userButton {
+  padding: 6px 25px !important;
+}

@@ -1,0 +1,22 @@
+.registerFormContainer {
+  width: 70%;
+  margin: 20px auto 200px;
+  border: 0.8px lightgrey solid;
+  box-shadow: lightslategrey 0.5px 0.5px;
+  border-radius: 10px;
+  padding: 15px 15px 3px;
+}
+
+.registerFormContainer .textRegisterInput {
+  display: block !important;
+  margin: 15px 0;
+}
+
+.registerSocialButton {
+  margin-right: 30px;
+}
+
+.registerButtonContainer {
+  width: 35.5%;
+  margin: 100px auto 10px;
+}

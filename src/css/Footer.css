@@ -1,0 +1,29 @@
+.footerTab {
+  width: 70%;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  margin: 0 auto;
+}
+
+.footerTab * {
+  display: block;
+  margin: 5px auto;
+}
+
+.footerTab h5 {
+  margin-bottom: 25px;
+}
+
+.subscribeButton {
+  border-radius: 10px;
+  padding: 0 5%;
+}
+
+.footer {
+  background-color: black;
+}
+
+.copyright {
+  margin-top: 20px;
+}

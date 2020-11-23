@@ -1,0 +1,40 @@
+.profilePic {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+}
+.userName {
+  line-height: 50px;
+  color: brown;
+  font-weight: 600;
+  font-size: 14px;
+}
+.sidePaneButtons {
+  width: 200px !important;
+  color: #36b !important;
+  background-color: white !important;
+  border: none !important;
+}
+
+.UserDetailProfileTab p {
+  margin-top: 30px;
+  font-size: 13px;
+}
+
+.deleteAddressButton {
+  float: right !important;
+  color: white !important;
+  font-weight: 500 !important;
+  padding: 0px !important;
+  background-color: #f44336 !important;
+  min-width: 20px !important;
+}
+
+.editPasswordInput {
+  width: 50%;
+  padding: 15px;
+}
+
+.inputandbutton {
+  margin-top: 20px !important;
+}

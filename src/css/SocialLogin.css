@@ -1,0 +1,43 @@
+.socialLoginContainer {
+  border-right: black 2px solid;
+}
+
+.socialLoginContainer .socialButton {
+  width: 65%;
+  display: block;
+  margin: 25px auto 25px 27%;
+}
+
+.loginFormInput {
+  display: block;
+  width: 95%;
+  margin: 10px 10px !important;
+}
+
+.loginFormContainer {
+  border: 0.5px lightgray solid;
+  box-shadow: lightsteelblue 0.5px 0.5px;
+  margin: 20px 100px 25px 25px !important;
+  padding: 10px;
+}
+.loginFormContainer h2 {
+  margin-left: 10px;
+}
+
+.loginSubmitButton {
+  margin-top: 20px !important;
+}
+
+.loginNavContainer {
+  margin-top: 20px !important;
+}
+.dividerContainer {
+  border-right: 2px solid black;
+}
+.dividerContainer Button {
+  margin-left: 72%;
+}
+
+.loginPageContainer {
+  padding: 30px 0px 150px;
+}

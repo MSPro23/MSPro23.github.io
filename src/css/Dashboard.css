@@ -1,0 +1,30 @@
+.popularProductsTab {
+  padding: 60px 80px 80px 40px;
+}
+
+.popularProductsTab h4,
+.viewAllButton {
+  display: block !important;
+  text-align: center;
+  margin: 10px auto !important;
+}
+
+.productTab {
+  border: 0.5px lightsteelblue solid;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  box-shadow: lightsteelblue 1px 1px;
+  text-align: center;
+  width: 100%;
+}
+
+.productTab div .productImage {
+  border-radius: 5px;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.linkgap {
+  margin-top: 100px;
+}
