@@ -41,3 +41,25 @@
 .loginPageContainer {
   padding: 30px 0px 150px;
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .socialLoginContainer .socialButton {
+    margin: 25px auto 25px;
+  }
+  .socialLoginContainer {
+    border-right: none;
+  }
+  .loginFormContainer {
+    border: 0.5px lightgray solid;
+    box-shadow: lightsteelblue 0.5px 0.5px;
+    margin: 20px auto 25px !important;
+    padding: 10px;
+  }
+  .dividerContainer {
+    border-right: none;
+  }
+  .dividerContainer Button {
+    margin-left: 0;
+  }
+}

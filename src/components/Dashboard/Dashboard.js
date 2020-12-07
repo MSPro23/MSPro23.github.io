@@ -1,3 +1,6 @@
+/**
+ * @author Calvin Galbaw
+ */
 import React from "react";
 import CarouselTab from "./CarouselTab";
 import PopularProducts from "./PopularProducts";

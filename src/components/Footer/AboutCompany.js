@@ -1,5 +1,12 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import React from "react";
 import "../../css/Footer.css";
+/**
+ * @description This creates the body of the about company component
+ */
 function AboutCompany() {
   return (
     <div className="footerTab">

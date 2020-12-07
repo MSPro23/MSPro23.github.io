@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import {
   PRODUCT_TOPRATING_GET,
   PRODUCT_TOPRATING_SUCCESS,
@@ -15,7 +19,15 @@ const initialTopRatingState = {
   success: null,
   show: false,
 };
-
+/**
+ *
+ * @param {intialCartDetails} state is the state object consisiting of top product
+ * @param {*} action is the action dispatched
+ *
+ * @description This is used to reduce the state according to the action dispatched
+ * It is a reducer to get popular products
+ * @returns an object having updated state according to the action
+ */
 export const productTopRatingReducer = (
   state = initialTopRatingState,
   action
@@ -29,7 +41,6 @@ export const productTopRatingReducer = (
       };
 
     case PRODUCT_TOPRATING_SUCCESS: {
-      console.log(action.payload.product_details);
       return {
         ...state,
         loading: false,
@@ -64,7 +75,15 @@ const initialAllProductState = {
   success: null,
   show: false,
 };
-
+/**
+ *
+ * @param {intialCartDetails} state is the state object consisiting of products
+ * @param {*} action is the action dispatched
+ *
+ * @description This is used to reduce the state according to the action dispatched
+ * It is a reducer to get and display the products
+ * @returns an object having updated state according to the action
+ */
 export const productAllReducer = (state = initialAllProductState, action) => {
   // console.log(action.payload);
   switch (action.type) {
@@ -75,7 +94,6 @@ export const productAllReducer = (state = initialAllProductState, action) => {
       };
 
     case PRODUCT_ALL_SUCCESS: {
-      console.log(action.payload.product_details);
       return {
         ...state,
         loading: false,

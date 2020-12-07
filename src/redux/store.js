@@ -9,8 +9,9 @@ import {
   productAllReducer,
   productTopRatingReducer,
 } from "./product/productReducer.js";
-
 import thunk from "redux-thunk";
+import { cartDetailReducer } from "./cart/cartReducer";
+
 const rootReducer = combineReducers({
   login: userLoginReducer,
   register: userRegisterReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   recoverPassword: userRecoverPasswordReducer,
   topRating: productTopRatingReducer,
   product: productAllReducer,
+  cartDetails: cartDetailReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

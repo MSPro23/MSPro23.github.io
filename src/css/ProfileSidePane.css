@@ -10,10 +10,12 @@
   font-size: 14px;
 }
 .sidePaneButtons {
-  width: 200px !important;
+  width: 100% !important;
   color: #36b !important;
   background-color: white !important;
+  font-size: 14px !important;
   border: none !important;
+  margin-top: 3px !important;
 }
 
 .UserDetailProfileTab p {
@@ -31,10 +33,43 @@
 }
 
 .editPasswordInput {
-  width: 50%;
+  width: 90%;
   padding: 15px;
+  background-color: rgb(247, 247, 247) !important;
+  margin: auto;
 }
 
 .inputandbutton {
   margin-top: 20px !important;
+}
+
+.editAddressInput {
+  margin-top: 10px !important;
+  display: block !important;
+}
+
+.editProfileContainer {
+  padding: 15px;
+}
+
+.editProfileInputs {
+  margin-top: 15px !important;
+}
+
+.addAddressInput {
+  margin-top: 20px !important;
+}
+.paperProfile {
+  width: 75%;
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .paperProfile {
+    width: 100% !important;
+  }
+  .profilePaper .UserDetailProfileTab {
+    width: 50% !important;
+    margin: 0;
+  }
 }

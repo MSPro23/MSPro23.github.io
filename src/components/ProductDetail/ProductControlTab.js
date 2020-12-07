@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import {
   faFacebookF,
   faGoogle,
@@ -7,10 +11,62 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import { Snackbar } from "@material-ui/core";
+import Axios from "axios";
+import React, { useContext, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
+import { useDispatch, useSelector } from "react-redux";
 import StarRatings from "react-star-ratings";
+import { ToastContext } from "../../App";
+import { addProductToCart } from "../../redux";
+import RatingPage from "./RatingPage";
+/**
+ *
+ *
+ * @description This holds the controls such as rating and order of the products
+ * @returns JSX of the product filter control
+ */
 function ProductControlTab({ details }) {
+  const [ratingTab, setRatingTab] = useState(false);
+  const [openSnack, setOpenSnack] = useState({ show: false, message: "" });
+  const dispatch = useDispatch();
+  const message = useSelector((state) => state.cartDetails.message);
+  const items = useSelector((state) => state.cartDetails.items);
+  /**
+   * @description This checks whether the item is present in the cart or not and shows the toast message accordingly
+   * and sends the product to be added to the cart
+   */
+  const handleClick = () => {
+    if (
+      items.some((item) => {
+        return item.product_id === details.product_id;
+      })
+    ) {
+      setOpenSnack({
+        show: true,
+        message: "Product Already added in the cart",
+      });
+    } else {
+      setOpenSnack({ show: true, message: "Added to the cart" });
+    }
+    dispatch(addProductToCart(details));
+  };
+  /**
+   * @description handles the onClose event of the toast to reset itself
+   */
+  const handleClose = () => {
+    setTimeout(() => {
+      setOpenSnack({
+        ...openSnack,
+        show: false,
+        message: "",
+      });
+    }, 3000);
+  };
+  /**
+   * @descriptiom This component contains the details of product such as name cost color rating along with add to cart button
+   * and give rating button
+   */
   return (
     <div className="productPriceContainer">
       <h2>{details.product_name}</h2>
@@ -41,6 +97,9 @@ function ProductControlTab({ details }) {
         ></span>
       </p>
       <br></br>
+      {/**
+       * These are social share buttons to share the products
+       */}
       <p>
         Share <FontAwesomeIcon size="lg" icon={faShareAlt}></FontAwesomeIcon>
       </p>
@@ -76,9 +135,31 @@ function ProductControlTab({ details }) {
       </Button>
       <br></br>
       <br></br>
-      <Button style={{ backgroundColor: "#00acee" }}>Add to Cart</Button>
+      <Button onClick={handleClick} style={{ backgroundColor: "#00acee" }}>
+        Add to Cart
+      </Button>
       &nbsp;&nbsp;
-      <Button style={{ backgroundColor: "#754b10" }}>Rate Product</Button>
+      {/**
+       * Rating button opens a modal which is used to give the rating of a product
+       */}
+      <Button
+        style={{ backgroundColor: "#754b10" }}
+        onClick={() => setRatingTab(true)}
+      >
+        Rate Product
+      </Button>
+      {ratingTab && (
+        <RatingPage
+          id={details.product_id}
+          setRatingTab={setRatingTab}
+        ></RatingPage>
+      )}
+      <Snackbar
+        open={openSnack.show}
+        autoHideDuration={50000}
+        message={openSnack.message}
+        onClose={handleClose}
+      ></Snackbar>
     </div>
   );
 }

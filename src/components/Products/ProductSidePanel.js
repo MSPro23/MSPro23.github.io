@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import {
   Grid,
   ListItem,
@@ -13,11 +17,15 @@ import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import Axios from "axios";
 import "../../css/Products.css";
+import { useHistory } from "react-router-dom";
 
 function ProductSidePanel({ filter, setFilter }) {
   const [allCategory, setAllCategory] = useState([]);
   const [allColor, setAllColor] = useState([]);
-
+  const history = useHistory();
+  /**
+   * @description To get all categories of the products to be displayed as list in the component
+   */
   useEffect(() => {
     Axios.get("http://180.149.241.208:3022/getAllCategories")
       .then((res) => {
@@ -27,7 +35,9 @@ function ProductSidePanel({ filter, setFilter }) {
         console.log(e.response.data.message);
       });
   }, []);
-
+  /**
+   * @description To get all colors of the products to be displayed as list in the component
+   */
   useEffect(() => {
     Axios.get("http://180.149.241.208:3022/getAllColors")
       .then((res) => {
@@ -37,7 +47,9 @@ function ProductSidePanel({ filter, setFilter }) {
         console.log(e);
       });
   }, []);
-
+  /**
+   * @description This constrols the dropdown status of the dropdown list for category and color filter
+   */
   const [open, setOpen] = React.useState({
     category: false,
     color: false,
@@ -58,7 +70,9 @@ function ProductSidePanel({ filter, setFilter }) {
       category: false,
     });
   };
-
+  /**
+   * @description This sets the filter to the category selected by the user and resets the pagination
+   */
   const onCategorySelect = (i) => {
     setFilter({
       ...filter,
@@ -67,10 +81,14 @@ function ProductSidePanel({ filter, setFilter }) {
       category_id: i,
       color_id: "",
       sortBy: "",
+      name: "",
       sortIn: "",
     });
+    history.push(`/products/${i}`);
   };
-
+  /**
+   * @description This sets the filter to the color selected by the user and resets the pagination
+   */
   const onColorSelect = (i) => {
     setFilter({
       ...filter,
@@ -81,18 +99,24 @@ function ProductSidePanel({ filter, setFilter }) {
       sortIn: "",
     });
   };
-
+  /**
+   * @description Resets the complete filter to fetch all products
+   */
   const onAllProductsClick = () => {
     setFilter({
       category_id: "",
+      name: "",
       color_id: "",
       sortBy: "",
       sortIn: "",
       pageNo: 1,
       perPage: 8,
     });
+    history.push("/products");
   };
-
+  /**
+   * @description This component is the side panel which contains the get all products button and, category and color filter
+   */
   return (
     <Grid container justify="center" direction="column" alignContent="center">
       <Button
@@ -112,19 +136,25 @@ function ProductSidePanel({ filter, setFilter }) {
         </ListItem>
         <Collapse in={open.category} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {allCategory.map((category) => {
-              return (
-                <>
-                  <ListItem
-                    button
-                    onClick={() => onCategorySelect(category.category_id)}
-                  >
-                    <ListItemText primary={category.category_name} />
-                  </ListItem>
-                  <Divider></Divider>
-                </>
-              );
-            })}
+            {
+              /**
+               * Map through all the categories to create a list
+               */
+              allCategory.map((category) => {
+                return (
+                  <React.Fragment key={category.category_id}>
+                    <ListItem
+                      button
+                      selected={category.category_id == filter.category_id}
+                      onClick={() => onCategorySelect(category.category_id)}
+                    >
+                      <ListItemText primary={category.category_name} />
+                    </ListItem>
+                    <Divider></Divider>
+                  </React.Fragment>
+                );
+              })
+            }
           </List>
         </Collapse>
       </List>
@@ -132,7 +162,7 @@ function ProductSidePanel({ filter, setFilter }) {
       <List className="sidePaneElement filterList">
         <ListItem button onClick={onColorListHandler}>
           <ListItemText primary="Color" />
-          {open.category ? <ExpandLess /> : <ExpandMore />}
+          {open.color ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={open.color} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
@@ -144,26 +174,34 @@ function ProductSidePanel({ filter, setFilter }) {
                 alignItems="flex-start"
                 spacing={1}
               >
-                {allColor.map((color) => {
-                  return (
-                    <Grid item lg={4}>
-                      <Tooltip title={color.color_name}>
-                        <Button
-                          onClick={() => onColorSelect(color.color_id)}
-                          style={{
-                            backgroundColor: color.color_code,
-                            width: "40px",
-                            padding: "0",
-                            height: "25px",
-                            border: "1px solid #000",
-                            outlineColor: "#000",
-                            borderRadius: "5px",
-                          }}
-                        ></Button>
-                      </Tooltip>
-                    </Grid>
-                  );
-                })}
+                {
+                  /**
+                   * Map through all the colors to create a list
+                   */
+                  allColor.map((color) => {
+                    return (
+                      <Grid item lg={4} key={color.color_id}>
+                        <Tooltip title={color.color_name}>
+                          <Button
+                            onClick={() => onColorSelect(color.color_id)}
+                            style={{
+                              backgroundColor: color.color_code,
+                              width: "40px",
+                              padding: "0",
+                              height: "25px",
+                              border:
+                                color.color_id === filter.color_id
+                                  ? "4px solid #000"
+                                  : "1px solid #000",
+                              outlineColor: "#000",
+                              borderRadius: "5px",
+                            }}
+                          ></Button>
+                        </Tooltip>
+                      </Grid>
+                    );
+                  })
+                }
               </Grid>
             </ListItem>
           </List>

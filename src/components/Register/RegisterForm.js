@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import {
   TextField,
   Radio,
@@ -7,22 +11,79 @@ import {
   FormControlLabel,
   FormHelperText,
   Button,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
-import React, { useState, useEffect } from "react";
+import MailIcon from "@material-ui/icons/Mail";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
+import PhoneIcon from "@material-ui/icons/Phone";
+import React, { useState, useEffect, useContext } from "react";
 import "../../css/RegisterPage.css";
 import useInput from "../../hooks/useInput";
-import { postRegister } from "../../redux";
+import { postRegister, resetRegister } from "../../redux";
 import { useSelector, useDispatch } from "react-redux";
-
+import { LoginContext, ToastContext } from "../../App";
+import { useHistory } from "react-router-dom";
+import Visibility from "@material-ui/icons/Visibility";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import useLoader from "../../hooks/useLoader";
+import { makeStyles } from "@material-ui/core/styles";
+/**
+ * @description This is a functional component used to create the register form of the register Page
+ * @returns JSX containing the form components of Material UI
+ */
 function RegisterForm() {
+  /**
+   * @description makeStyles is used to give custom style to material UI components
+   * Here helptext is styled to get margin in it
+   */
+  const useStyles = makeStyles({
+    helperPass: {
+      "& .MuiFormHelperText-contained": {
+        margin: "0 0 0 79%",
+        "@media (max-width:400px)": {
+          margin: "0 0 0 40%",
+        },
+      },
+    },
+    helperMobile: {
+      "& .MuiFormHelperText-contained": {
+        margin: "0 0 0 95%",
+        "@media (max-width:400px)": {
+          margin: "0 0 0 80%",
+        },
+      },
+    },
+  });
+
+  const classes = useStyles();
+  /**
+   * States and binds of controlled form data is initialized
+   */
   const [firstName, firstNameBind] = useInput("");
   const [lastName, lastNameBind] = useInput("");
   const [email, emailBind] = useInput("");
   const [password, passwordBind] = useInput("");
   const [confirmPassword, confirmPasswordBind] = useInput("");
-  const [mobile, mobileBind] = useInput("");
+  const [mobile, setMobile] = useState("");
   const [gender, genderBind] = useInput("");
+  /**
+   *
+   * @param e is the synthetic event
+   *
+   * @description This checks the limit of the characters used and accordingly updates the form data
+   */
+  const onMobileChange = (e) => {
+    e.target.value.length > 10 ? setMobile(mobile) : setMobile(e.target.value);
+  };
 
+  const [loader, showLoader, hideLoader] = useLoader();
+  /**
+   * This defines the state of errors and its messages for each input element,
+   *
+   */
   const [errorState, setErrorState] = useState({
     emailError: false,
     emailErrorMessage: "",
@@ -31,15 +92,17 @@ function RegisterForm() {
     lastNameError: false,
     lastNameErrorMessage: "",
     passwordError: false,
-    passwordErrorMessage: "",
+    passwordErrorMessage: "8-12 Alphanumeric characters",
     confirmPasswordError: false,
-    confirmPasswordErrorMessage: "",
+    confirmPasswordErrorMessage: "8-12 Alphanumeric characters",
     mobileError: false,
-    mobileErrorMessage: "",
+    mobileErrorMessage: `${mobile.length}/10`,
     genderError: false,
     genderErrorMessage: "",
   });
-
+  /**
+   * Similarly submitStatus holds the truth value for enabling or disabling the submit button
+   */
   const [submitStatus, setSubmitStatus] = useState({
     emailStatus: true,
     passwordStatus: true,
@@ -49,9 +112,50 @@ function RegisterForm() {
     mobileStatus: true,
     genderStatus: true,
   });
-
+  /**
+   * Getting required states from the redux using useSelector hooks
+   */
   const message = useSelector((state) => state.register.message);
-  const dispatch = useDispatch();
+  const success = useSelector((state) => state.register.success);
+  const completed = useSelector((state) => state.register.completed);
+  const loading = useSelector((state) => state.register.loading);
+
+  const dispatch = useDispatch(); //creates a dispatch function to send dispatch a action
+  const [loginStatus, setLoginStatus] = useContext(LoginContext); //getting the login state and setState using hooks
+
+  const [open, setOpen] = useContext(ToastContext); //getting the toast component state and setState using hooks
+
+  const history = useHistory(); //creates a useHistory hook to redirect page
+  /**
+   * These functions handle the password visibility control using state and event listener on button
+   */
+  const [values, setValues] = React.useState({
+    showPassword: false,
+    showConfirmPassword: false,
+  });
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const handleClickShowConfirmPassword = () => {
+    setValues({ ...values, showConfirmPassword: !values.showConfirmPassword });
+  };
+
+  const handleMouseDownConfirmPassword = (event) => {
+    event.preventDefault();
+  };
+
+  /**
+   *
+   * @description This checks the validity of email and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of email value
+   */
+
   const emailValidation = () => {
     let pattern = /^\w{1,}(\.|)\w{1,}@\w{1,}\.(com|co.in|in|net)$/;
     if (email === "") {
@@ -79,6 +183,11 @@ function RegisterForm() {
       }
     }
   };
+  /**
+   *
+   * @description This checks the validity of password and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of password value
+   */
 
   const passwordValidation = () => {
     if (password === "") {
@@ -108,7 +217,7 @@ function RegisterForm() {
         } else {
           setErrorState({
             ...errorState,
-            passwordErrorMessage: "",
+            passwordErrorMessage: "8-12 Alphanumeric characters",
             passwordError: false,
           });
           setSubmitStatus({ ...submitStatus, passwordStatus: false });
@@ -116,6 +225,11 @@ function RegisterForm() {
       }
     }
   };
+  /**
+   *
+   * @description This checks the validity of confirm password and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of confirm password value
+   */
 
   const confirmPasswordValidation = () => {
     if (confirmPassword === "") {
@@ -153,7 +267,7 @@ function RegisterForm() {
         } else {
           setErrorState({
             ...errorState,
-            confirmPasswordErrorMessage: "",
+            confirmPasswordErrorMessage: "8-12 Alphanumeric characters",
             confirmPasswordError: false,
           });
           setSubmitStatus({ ...submitStatus, confirmPasswordStatus: false });
@@ -161,6 +275,12 @@ function RegisterForm() {
       }
     }
   };
+
+  /**
+   *
+   * @description This checks the validity of first name and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of first name value
+   */
 
   const firstNameValidation = () => {
     let pattern = /^[A-Za-z]+$/;
@@ -189,6 +309,11 @@ function RegisterForm() {
       }
     }
   };
+  /**
+   *
+   * @description This checks the validity of last name and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of last name value
+   */
 
   const lastNameValidation = () => {
     let pattern = /^[A-Za-z]+$/;
@@ -218,10 +343,16 @@ function RegisterForm() {
     }
   };
 
+  /**
+   *
+   * @description This checks the validity of mobile and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of mobile value
+   */
+
   const mobileValidation = () => {
     let pattern = /^[0-9]+$/;
     if (mobile[0] == 6 || mobile[0] == 7 || mobile[0] == 8 || mobile[0] == 9) {
-      if (mobile.length < 10) {
+      if (mobile.length < 10 || mobile.length > 10) {
         setErrorState({
           ...errorState,
           mobileErrorMessage: "Phone number should be 10 digits long",
@@ -232,7 +363,7 @@ function RegisterForm() {
         if (mobile.match(pattern)) {
           setErrorState({
             ...errorState,
-            mobileErrorMessage: "",
+            mobileErrorMessage: `${mobile.length}/10`,
             mobileError: false,
           });
           setSubmitStatus({ ...submitStatus, mobileStatus: false });
@@ -262,6 +393,12 @@ function RegisterForm() {
     }
   };
 
+  /**
+   *
+   * @description This checks the validity of gender and updates the state and the error message accordingly
+   * @returns The error message and the error state is set depending on validity of gender value
+   */
+
   const genderValidation = () => {
     if (gender === "") {
       setErrorState({
@@ -280,6 +417,9 @@ function RegisterForm() {
     }
   };
 
+  /**
+   * @description Dispatches the redux action of post register along with the data required
+   */
   const onRegisterSubmit = () => {
     dispatch(
       postRegister({
@@ -294,10 +434,39 @@ function RegisterForm() {
     );
   };
 
+  /**
+   * @description Handles the loader of the page using loading value from redux
+   */
   useEffect(() => {
-    message && alert(message);
-  }, [message]);
+    loading ? showLoader() : hideLoader();
+  }, [loading]);
 
+  /**
+   * @description this checks the status of the dispatched action and updates the states according to the response and
+   * diplays it to the user
+   */
+  useEffect(() => {
+    if (success == true && completed) {
+      setOpen({ show: true, message: "Registeration Successful" });
+      dispatch(resetRegister());
+      history.push("/login");
+    } else if (success == false && completed) {
+      setOpen({ show: true, message: message.message });
+      dispatch(resetRegister());
+    }
+  }, [success, completed, loading]);
+  /**
+   *
+   * @description Checks if the user is logged in or not to be called back
+   */
+  useEffect(() => {
+    loginStatus.isLoggedIn && history.push("/dashboard");
+  });
+
+  /**
+   * @description Input form is made used TextFeild component and InputAdornment for icons of material UI
+   * and its container using div
+   */
   return (
     <div className="registerFormContainer">
       <h2> Register to NeoSTORE</h2>
@@ -307,6 +476,13 @@ function RegisterForm() {
         className="textRegisterInput"
         variant="outlined"
         size="small"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <TextFieldsIcon />
+            </InputAdornment>
+          ),
+        }}
         onBlur={firstNameValidation}
         value={firstName}
         {...firstNameBind}
@@ -319,6 +495,13 @@ function RegisterForm() {
         className="textRegisterInput"
         variant="outlined"
         size="small"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <TextFieldsIcon />
+            </InputAdornment>
+          ),
+        }}
         onBlur={lastNameValidation}
         value={lastName}
         {...lastNameBind}
@@ -330,47 +513,106 @@ function RegisterForm() {
         helperText={errorState.emailErrorMessage}
         className="textRegisterInput"
         variant="outlined"
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <MailIcon />
+            </InputAdornment>
+          ),
+        }}
         size="small"
         fullWidth
         onBlur={emailValidation}
         value={email}
         {...emailBind}
-        label="Email Address"
+        label="Email email"
       ></TextField>
+      {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
       <TextField
-        error={errorState.passwordError}
-        helperText={errorState.passwordErrorMessage}
-        className="textRegisterInput"
-        variant="outlined"
-        size="small"
-        onBlur={passwordValidation}
-        value={password}
-        {...passwordBind}
         fullWidth
-        label="Password"
-      ></TextField>
-      <TextField
-        error={errorState.confirmPasswordError}
-        helperText={errorState.confirmPasswordErrorMessage}
-        className="textRegisterInput"
         variant="outlined"
+        className={`textRegisterInput ${
+          !errorState.passwordError && classes.helperPass
+        }`}
         size="small"
+        label="Password"
+        type={values.showPassword ? "text" : "password"}
+        value={password}
+        error={errorState.passwordError}
+        onBlur={passwordValidation}
+        {...passwordBind}
+        helperText={errorState.passwordErrorMessage}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
+      <TextField
+        fullWidth
+        variant="outlined"
+        className={`textRegisterInput ${
+          !errorState.confirmPasswordError && classes.helperPass
+        }`}
+        size="small"
+        label="Confirm Password"
+        type={values.showConfirmPassword ? "text" : "password"}
         value={confirmPassword}
+        error={errorState.confirmPasswordError}
         onBlur={confirmPasswordValidation}
         {...confirmPasswordBind}
-        label="Confirm Password"
-        fullWidth
-      ></TextField>
+        helperText={errorState.confirmPasswordErrorMessage}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowConfirmPassword}
+                onMouseDown={handleMouseDownConfirmPassword}
+                edge="end"
+              >
+                {values.showConfirmPassword ? (
+                  <Visibility />
+                ) : (
+                  <VisibilityOff />
+                )}
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
+      />
       <TextField
         error={errorState.mobileError}
-        helperText={errorState.mobileErrorMessage}
-        className="textRegisterInput"
+        helperText={
+          errorState.mobileError
+            ? errorState.mobileErrorMessage
+            : `${mobile.length}/10`
+        }
+        className={`textRegisterInput ${
+          !errorState.mobileError && classes.helperMobile
+        }`}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <PhoneIcon />
+            </InputAdornment>
+          ),
+        }}
         fullWidth
         variant="outlined"
         onBlur={mobileValidation}
         size="small"
         value={mobile}
-        {...mobileBind}
+        onChange={onMobileChange}
         label="Mobile No."
       ></TextField>
       <FormControl component="fieldset" error={errorState.genderError}>
@@ -405,6 +647,7 @@ function RegisterForm() {
       >
         Register
       </Button>
+      {loader}
     </div>
   );
 }

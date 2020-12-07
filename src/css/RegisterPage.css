@@ -20,3 +20,14 @@
   width: 35.5%;
   margin: 100px auto 10px;
 }
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .registerButtonContainer {
+    width: 80%;
+    margin: 100px auto 10px;
+  }
+  .registerFormContainer {
+    width: 90%;
+  }
+}

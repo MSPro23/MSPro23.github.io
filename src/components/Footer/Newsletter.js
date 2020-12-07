@@ -1,6 +1,14 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import React, { useState } from "react";
 import "../../css/Footer.css";
 import useInput from "../../hooks/useInput";
+
+/**
+ * @description This creates the component of Newsletter tab
+ */
 function Newsletter() {
   const [email, emailBind] = useInput("");
 

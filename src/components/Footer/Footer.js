@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -5,7 +9,9 @@ import AboutCompany from "./AboutCompany.js";
 import Information from "./Information.js";
 import Newsletter from "./Newsletter.js";
 import "../../css/Footer.css";
-
+/**
+ * @description Creates the footer using the row and col of bootstrap
+ */
 function Footer() {
   return (
     <div className="footer">

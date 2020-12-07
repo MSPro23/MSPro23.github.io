@@ -1,0 +1,22 @@
+.reviewPanel p {
+  display: inline;
+  float: right;
+}
+
+.reviewPanel {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+}
+
+.cartContainer {
+  width: 90%;
+  margin: 40px auto 150px;
+}
+
+table {
+  border-collapse: collapse;
+}
+tr {
+  border-bottom: solid thin;
+}

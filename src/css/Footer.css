@@ -27,3 +27,7 @@
 .copyright {
   margin-top: 20px;
 }
+
+.hoverLink:hover {
+  cursor: pointer;
+}

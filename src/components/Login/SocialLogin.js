@@ -1,3 +1,7 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import React from "react";
 import Button from "react-bootstrap/esm/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,6 +11,10 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import "../../css/SocialLogin.css";
+/**
+ * @description Creates the social login buttons
+ * @returns JSX
+ */
 function SocialLogin() {
   return (
     <div className="socialLoginContainer">

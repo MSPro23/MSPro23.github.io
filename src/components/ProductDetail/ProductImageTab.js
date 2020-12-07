@@ -1,11 +1,23 @@
+/**
+ * @author Calvin Galbaw
+ */
+
 import { Grid } from "@material-ui/core";
 import React, { useState } from "react";
 import "../../css/ProductDetail.css";
+import {
+  MagnifierContainer,
+  MagnifierPreview,
+  MagnifierZoom,
+} from "react-image-magnifiers";
+import ReactImageMagnify from "react-image-magnify";
+/**
+ *
+ * @param details is the product detail of a single product
+ * @returns JSX for the image handling and zoom effect
+ */
 function ProductImageTab({ details }) {
   const [mainImage, setMainImage] = useState(details.product_image);
-  // const [subImages, setSubImages] = useState(
-  //   details.subImages_id.product_subImages
-  // );
 
   const onSubImageClick = (i) => {
     setMainImage(i);
@@ -13,24 +25,43 @@ function ProductImageTab({ details }) {
 
   return (
     <div className="mainImageContainer">
-      <img
-        alt="Product item"
-        width="350px"
-        height="200px"
-        src={`http://180.149.241.208:3022/${mainImage}`}
-      ></img>
+      <ReactImageMagnify
+        {...{
+          smallImage: {
+            src: `http://180.149.241.208:3022/${mainImage}`,
+            width: 350,
+            height: 250,
+          },
+          largeImage: {
+            src: `http://180.149.241.208:3022/${mainImage}`,
+            width: 2000,
+            height: 600,
+          },
+        }}
+        style={{
+          zIndex: 2,
+          width: "400px !important",
+          height: "250px !important",
+        }}
+        imageStyle={{ width: "400px !important", height: "250px !important" }}
+      />
       <Grid
         className="subImageContainer"
         container
         justify="space-evenly"
         alignContent="flex-start"
       >
+        {/* {console.log(details)} */}
         {details.subImages_id.product_subImages.map((image) => {
           return (
             <img
+              key={image}
               width="100px"
               height="50px"
-              onClick={onSubImageClick}
+              style={{
+                border: image == mainImage ? "2px black solid" : "none",
+              }}
+              onClick={() => onSubImageClick(image)}
               alt="product item"
               src={`http://180.149.241.208:3022/${image}`}
             ></img>
